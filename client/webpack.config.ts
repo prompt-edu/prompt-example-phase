@@ -9,9 +9,11 @@ import CopyPlugin from 'copy-webpack-plugin'
 
 const { ModuleFederationPlugin } = webpack.container
 
-// Set the following variables to correctly configure the webpack
-// In Environment Variables
-// DEPLOYMENT_SUBPATH=template
+// ########################################
+// ### Component specific configuration ###
+// ########################################
+const COMPONENT_NAME = 'template_component'
+const COMPONENT_DEV_PORT = 3001
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -34,7 +36,7 @@ const config: (env: Record<string, string>) => container.Configuration = (env) =
       compress: true,
       hot: true,
       historyApiFallback: true,
-      port: 3001, // Adjust this if you have multiple components running
+      port: COMPONENT_DEV_PORT,
       client: {
         progress: true,
       },
@@ -74,17 +76,20 @@ const config: (env: Record<string, string>) => container.Configuration = (env) =
     },
     plugins: [
       new ModuleFederationPlugin({
-        name: 'template_component', // TODO: rename this to your component name
+        name: COMPONENT_NAME, // TODO: rename this to your component name
         filename: 'remoteEntry.js',
         exposes: {
-          './routers': './routers',
+          './routes': './routes',
           './sidebar': './sidebar',
-          './OverviewPage': './src/OverviewPage',
         },
         shared: {
           react: { singleton: true, requiredVersion: deps.react },
           'react-dom': { singleton: true, requiredVersion: deps['react-dom'] },
           'react-router-dom': { singleton: true, requiredVersion: deps['react-router-dom'] },
+          '@tanstack/react-query': {
+            singleton: true,
+            requiredVersion: deps['@tanstack/react-query'],
+          },
         },
       }),
       new CopyPlugin({
