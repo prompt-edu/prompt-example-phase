@@ -1,9 +1,11 @@
-import { env, parseURL } from '@tumaet/prompt-shared-state'
+import { parseURL } from '@tumaet/prompt-shared-state'
 import axios from 'axios'
 
-const templateServer = env.TEMPLATE_HOST || ''
+// EXAMPLE_HOST is injected via core's env.js but not yet part of the
+// @tumaet/prompt-shared-state EnvType, so it is read from window.env directly.
+const exampleServer = (window.env as { EXAMPLE_HOST?: string }).EXAMPLE_HOST ?? ''
 
-const serverBaseUrl = parseURL(templateServer)
+const serverBaseUrl = parseURL(exampleServer)
 
 export interface Patch {
   op: 'replace' | 'add' | 'remove' | 'copy'
@@ -22,4 +24,4 @@ authenticatedAxiosInstance.interceptors.request.use((config) => {
   return config
 })
 
-export { authenticatedAxiosInstance as templateAxiosInstance }
+export { authenticatedAxiosInstance as exampleAxiosInstance }

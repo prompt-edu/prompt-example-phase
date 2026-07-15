@@ -27,9 +27,9 @@ export const ParticipantsPage = () => {
 
   return (
     <div id='table-view' className='relative flex flex-col'>
-      <ManagementPageHeader>Template Component Participants</ManagementPageHeader>
+      <ManagementPageHeader>Example Component Participants</ManagementPageHeader>
       <p className='text-sm text-muted-foreground mb-4'>
-        This table shows all participants of the Template Component phase.
+        This table shows all participants of the Example Component phase.
       </p>
       <div className='w-full'>
         <CoursePhaseParticipationsTable

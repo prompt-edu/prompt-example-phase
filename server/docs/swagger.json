@@ -1,17 +1,17 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is the template server of PROMPT.",
-        "title": "PROMPT Template API",
+        "description": "This is the example server of PROMPT.",
+        "title": "PROMPT Example API",
         "contact": {},
         "version": "1.0"
     },
     "host": "localhost:8086",
-    "basePath": "/template-service/api",
+    "basePath": "/example-service/api",
     "paths": {
         "/copy": {
             "post": {
-                "description": "Copy template server data from a source course phase to a target course phase.",
+                "description": "Copy example server data from a source course phase to a target course phase.",
                 "consumes": [
                     "application/json"
                 ],
@@ -107,14 +107,14 @@
         },
         "/course_phase/{coursePhaseID}/hello": {
             "get": {
-                "description": "Returns a simple hello message from the template server.",
+                "description": "Returns a simple hello message from the example server.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "template"
+                    "example"
                 ],
-                "summary": "Template server health check",
+                "summary": "Example server health check",
                 "parameters": [
                     {
                         "type": "string",
@@ -139,14 +139,14 @@
         },
         "/course_phase/{coursePhaseID}/info": {
             "get": {
-                "description": "Get template-specific info for a course phase.",
+                "description": "Get example-specific info for a course phase.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "template"
+                    "example"
                 ],
-                "summary": "Get template info",
+                "summary": "Get example info",
                 "parameters": [
                     {
                         "type": "string",

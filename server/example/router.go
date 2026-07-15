@@ -1,4 +1,4 @@
-package template
+package example
 
 import (
 	"net/http"
@@ -9,24 +9,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// setupTemplateRouter creates a router group for template server endpoints.
-func setupTemplateRouter(routerGroup *gin.RouterGroup, authMiddleware func(allowedRoles ...string) gin.HandlerFunc) {
-	templateRouter := routerGroup.Group("info")
+// setupExampleRouter creates a router group for example server endpoints.
+func setupExampleRouter(routerGroup *gin.RouterGroup, authMiddleware func(allowedRoles ...string) gin.HandlerFunc) {
+	exampleRouter := routerGroup.Group("info")
 
-	templateRouter.GET("", authMiddleware(promptSDK.PromptAdmin, promptSDK.CourseLecturer), getTemplateInfo)
+	exampleRouter.GET("", authMiddleware(promptSDK.PromptAdmin, promptSDK.CourseLecturer), getExampleInfo)
 }
 
-// getTemplateInfo godoc
-// @Summary Get template info
-// @Description Get template-specific info for a course phase.
-// @Tags template
+// getExampleInfo godoc
+// @Summary Get example info
+// @Description Get example-specific info for a course phase.
+// @Tags example
 // @Produce json
 // @Param coursePhaseID path string true "Course Phase UUID"
 // @Success 200 {string} string
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /course_phase/{coursePhaseID}/info [get]
-func getTemplateInfo(c *gin.Context) {
+func getExampleInfo(c *gin.Context) {
 	coursePhaseID, err := uuid.Parse(c.Param("coursePhaseID"))
 	if err != nil {
 		log.Error("Error parsing coursePhaseID: ", err)
@@ -34,12 +34,12 @@ func getTemplateInfo(c *gin.Context) {
 		return
 	}
 
-	templateInfo, err := GetTemplateInfo(c, coursePhaseID)
+	exampleInfo, err := GetExampleInfo(c, coursePhaseID)
 	if err != nil {
 		handleError(c, http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, templateInfo)
+	c.JSON(http.StatusOK, exampleInfo)
 }
 
 func handleError(c *gin.Context, statusCode int, err error) {

@@ -2,7 +2,7 @@ import { Role, type SidebarMenuItemProps } from '@tumaet/prompt-shared-state'
 import { Construction } from 'lucide-react'
 
 const sidebarItems: SidebarMenuItemProps = {
-  title: 'TemplateComponent',
+  title: 'ExampleComponent',
   icon: <Construction />,
   goToPath: '',
   subitems: [

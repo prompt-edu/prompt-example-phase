@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/copy": {
             "post": {
-                "description": "Copy template server data from a source course phase to a target course phase.",
+                "description": "Copy example server data from a source course phase to a target course phase.",
                 "consumes": [
                     "application/json"
                 ],
@@ -113,14 +113,14 @@ const docTemplate = `{
         },
         "/course_phase/{coursePhaseID}/hello": {
             "get": {
-                "description": "Returns a simple hello message from the template server.",
+                "description": "Returns a simple hello message from the example server.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "template"
+                    "example"
                 ],
-                "summary": "Template server health check",
+                "summary": "Example server health check",
                 "parameters": [
                     {
                         "type": "string",
@@ -145,14 +145,14 @@ const docTemplate = `{
         },
         "/course_phase/{coursePhaseID}/info": {
             "get": {
-                "description": "Get template-specific info for a course phase.",
+                "description": "Get example-specific info for a course phase.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "template"
+                    "example"
                 ],
-                "summary": "Get template info",
+                "summary": "Get example info",
                 "parameters": [
                     {
                         "type": "string",
@@ -216,10 +216,10 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8086",
-	BasePath:         "/template-service/api",
+	BasePath:         "/example-service/api",
 	Schemes:          []string{},
-	Title:            "PROMPT Template API",
-	Description:      "This is the template server of PROMPT.",
+	Title:            "PROMPT Example API",
+	Description:      "This is the example server of PROMPT.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

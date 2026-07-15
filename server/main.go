@@ -14,17 +14,17 @@ import (
 	promptSDK "github.com/prompt-edu/prompt-sdk"
 	"github.com/prompt-edu/prompt-sdk/promptTypes"
 	sdkUtils "github.com/prompt-edu/prompt-sdk/utils"
-	"github.com/prompt-edu/prompt/servers/template_server/config"
-	"github.com/prompt-edu/prompt/servers/template_server/copy"
-	db "github.com/prompt-edu/prompt/servers/template_server/db/sqlc"
-	"github.com/prompt-edu/prompt/servers/template_server/template"
+	"github.com/prompt-edu/prompt/servers/example_server/config"
+	"github.com/prompt-edu/prompt/servers/example_server/copy"
+	db "github.com/prompt-edu/prompt/servers/example_server/db/sqlc"
+	"github.com/prompt-edu/prompt/servers/example_server/example"
 	log "github.com/sirupsen/logrus"
 )
 
 var dbUser string = promptSDK.GetEnv("DB_USER", "prompt-postgres")
 var dbPassword string = promptSDK.GetEnv("DB_PASSWORD", "prompt-postgres")
-var dbHost string = promptSDK.GetEnv("DB_HOST_TEMPLATE_SERVER", "localhost")
-var dbPort string = promptSDK.GetEnv("DB_PORT_TEMPLATE_SERVER", "5437")
+var dbHost string = promptSDK.GetEnv("DB_HOST_EXAMPLE_SERVER", "localhost")
+var dbPort string = promptSDK.GetEnv("DB_PORT_EXAMPLE_SERVER", "5437")
 var dbName string = promptSDK.GetEnv("DB_NAME", "prompt")
 var sslMode string = promptSDK.GetEnv("SSL_MODE", "disable")
 var timeZone string = promptSDK.GetEnv("DB_TIMEZONE", "Europe/Berlin") // Add a timezone parameter
@@ -66,17 +66,17 @@ func initKeycloak(queries db.Queries) {
 	}
 }
 
-// @title           PROMPT Template API
+// @title           PROMPT Example API
 // @version         1.0
-// @description     This is the template server of PROMPT.
+// @description     This is the example server of PROMPT.
 // @host            localhost:8086
-// @BasePath        /template-service/api
+// @BasePath        /example-service/api
 // @externalDocs.description  PROMPT Documentation
 // @externalDocs.url          https://prompt-edu.github.io/prompt/
 func main() {
 	sentryEnabled := promptSDK.GetEnv("SENTRY_ENABLED", "false") == "true"
 	if sentryEnabled {
-		_ = sdkUtils.InitSentry(promptSDK.GetEnv("SENTRY_DSN_TEMPLATE_SERVER", ""))
+		_ = sdkUtils.InitSentry(promptSDK.GetEnv("SENTRY_DSN_EXAMPLE_SERVER", ""))
 		defer sentry.Flush(2 * time.Second)
 	}
 
@@ -101,16 +101,16 @@ func main() {
 	}
 	router.Use(promptSDK.CORSMiddleware(clientHost))
 
-	api := router.Group("template-service/api/course_phase/:coursePhaseID")
+	api := router.Group("example-service/api/course_phase/:coursePhaseID")
 	initKeycloak(*query)
 
-	api.GET("/hello", helloTemplateServer)
+	api.GET("/hello", helloExampleServer)
 
-	copyApi := router.Group("template-service/api")
+	copyApi := router.Group("example-service/api")
 	copy.InitCopyModule(copyApi, *query, conn)
 
 	promptTypes.RegisterInfoEndpoint(copyApi, promptTypes.ServiceInfo{
-		ServiceName: "template-service",
+		ServiceName: "example-service",
 		Version:     promptSDK.GetEnv("SERVER_IMAGE_TAG", ""),
 		Capabilities: map[string]bool{
 			promptTypes.CapabilityPrivacyExport:   false,
@@ -126,26 +126,26 @@ func main() {
 
 	config.InitConfigModule(api, *query, conn)
 
-	template.InitTemplateModule(api, *query, conn)
+	example.InitExampleModule(api, *query, conn)
 
 	serverAddress := promptSDK.GetEnv("SERVER_ADDRESS", "localhost:8086")
-	log.Info("Template Server started")
+	log.Info("Example Server started")
 	err = router.Run(serverAddress)
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
 
-// helloTemplateServer godoc
-// @Summary Template server health check
-// @Description Returns a simple hello message from the template server.
-// @Tags template
+// helloExampleServer godoc
+// @Summary Example server health check
+// @Description Returns a simple hello message from the example server.
+// @Tags example
 // @Produce json
 // @Param coursePhaseID path string true "Course Phase UUID"
 // @Success 200 {object} map[string]string
 // @Router /course_phase/{coursePhaseID}/hello [get]
-func helloTemplateServer(c *gin.Context) {
+func helloExampleServer(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "Hello from the template service",
+		"message": "Hello from the example service",
 	})
 }

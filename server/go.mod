@@ -1,4 +1,4 @@
-module github.com/prompt-edu/prompt/servers/template_server
+module github.com/prompt-edu/prompt/servers/example_server
 
 go 1.26.5
 

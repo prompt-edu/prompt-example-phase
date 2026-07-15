@@ -1,7 +1,7 @@
 import { type ExtendedRouteObject, Role } from '@tumaet/prompt-shared-state'
+import { ParticipantsPage } from '../src/example_component/pages/ParticipantsPage'
+import { SettingsPage } from '../src/example_component/pages/SettingsPage'
 import { OverviewPage } from '../src/OverviewPage'
-import { ParticipantsPage } from '../src/template_component/pages/ParticipantsPage'
-import { SettingsPage } from '../src/template_component/pages/SettingsPage'
 
 const routes: ExtendedRouteObject[] = [
   {
