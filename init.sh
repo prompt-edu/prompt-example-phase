@@ -131,9 +131,11 @@ if [[ "$VERIFY" == 1 ]]; then
   echo "-> verifying"
   (cd server && go mod tidy && go build ./...) || die "go build failed"
   if command -v yarn >/dev/null; then
-    (cd client && yarn install && yarn typecheck) || die "client typecheck failed"
+    (cd client && yarn install && { yarn lint:fix >/dev/null 2>&1 || true; } \
+      && yarn lint && yarn typecheck) \
+      || die "client lint or typecheck failed"
   else
-    echo "warning: yarn not found; run 'cd client && yarn install && yarn typecheck' yourself"
+    echo "warning: yarn not found; run 'cd client && yarn install && yarn lint:fix && yarn typecheck' yourself"
   fi
 
   cat <<EOF
