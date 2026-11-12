@@ -1,19 +1,19 @@
-ARG IMAGE_TAG=latest
-FROM ghcr.io/prompt-edu/prompt/prompt-clients-base:${IMAGE_TAG} AS core-base
+# Self-contained build (no prompt-clients-base image needed outside the monorepo)
+FROM node:26.12.1-alpine AS build
 
+WORKDIR /app
+# .yarnrc.yml is optional (Corepack reads the Yarn version from package.json);
+# the [l] glob copies it when present but does not fail the build if absent.
+COPY package.json yarn.lock .yarnrc.ym[l] ./
+# Node 25+ images no longer bundle Corepack, so install it from npm first.
+RUN npm install -g corepack@0.36.0 && corepack enable && yarn install --immutable
 
-WORKDIR /app/example_component
 COPY . ./
-
-ARG MF_BUILD_VERSION
-ENV MF_BUILD_VERSION=$MF_BUILD_VERSION
 RUN yarn build
 
-# Build the final image
 FROM nginx:stable-alpine
 
-COPY --from=core-base /app/example_component/build /usr/share/nginx/html
-COPY --from=core-base /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=core-base /app/nginx/spa.conf /etc/nginx/spa.conf
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

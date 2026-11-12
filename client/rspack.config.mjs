@@ -1,4 +1,4 @@
-import { createRspackConfig } from '../shared/rspack/createRspackConfig.mjs'
+import { createRspackConfig } from './shared/rspack/createRspackConfig.mjs'
 
 export default createRspackConfig({
   name: 'example_component',

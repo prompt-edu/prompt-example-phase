@@ -1,19 +1,14 @@
 # Example Component
 
-This is the reference micro-frontend for a PROMPT course phase. It is intentionally minimal:
-copy it, rename it, and you have a working phase client that plugs into the core management
-console. Its backend counterpart is [`servers/example_server`](../../servers/example_server).
-
-> **Fastest start:** run `make new-phase NAME=<name> CLIENT_PORT=<port> SERVER_PORT=<port>` from
-> the repository root — it copies this component and the example server and performs every
-> registration step listed below automatically.
+The micro-frontend of this course phase. It plugs into the PROMPT core management console. Its
+backend counterpart is [`../server`](../server).
 
 ## How a phase client plugs into PROMPT
 
-PROMPT's core client (`clients/core`) is a Webpack Module Federation host. Each course phase is a
-**remote** that core loads at runtime based on the course configuration. A phase remote must expose
-exactly three modules (`exposes` in `clients/shared/rspack/createRspackConfig.mjs`, which is where
-this component's entire rspack config comes from):
+PROMPT's core client is a Module Federation host. Each course phase is a **remote** that core
+loads at runtime based on the course configuration. A phase remote must expose exactly three
+modules (`exposes` in `shared/rspack/createRspackConfig.mjs`, which builds this component's
+entire rspack config):
 
 | Exposed module | File           | Consumed by core as                              |
 | -------------- | -------------- | ------------------------------------------------ |
@@ -37,41 +32,32 @@ src/
     pages/              ParticipantsPage (shared participations table), SettingsPage
   bootstrap.tsx         Standalone entry (running the component on its own, rare)
   index.js              Async boundary required by Module Federation
+shared/                 Module Federation config factory and standalone mount helpers
 rspack.config.mjs       Component name + dev port passed to the shared config factory
-Dockerfile              Production build served by nginx (used by docker-compose)
+Dockerfile              Production build served by nginx (nginx.conf)
 ```
 
 ## What the code demonstrates
 
-- **Talking to your phase server** — `src/example_component/network/exampleServerConfig.ts`
-  creates an Axios instance with the JWT interceptor; `queries/getExampleInfo.ts` shows the
-  React Query pattern against `/example-service/api/course_phase/:coursePhaseID/...`.
-- **Reusing shared UI** — pages use `@tumaet/prompt-ui-components`
-  (`ManagementPageHeader`, `ErrorPage`, `LoadingPage`, Cards) and the shared
-  `CoursePhaseParticipationsTable` instead of custom widgets.
-- **Role-gated navigation** — `requiredPermissions` on routes and sidebar subitems.
+- **Talking to your phase server**: `src/example_component/network/exampleServerConfig.ts`
+  creates an authenticated Axios instance from `@tumaet/prompt-shared-state`;
+  `queries/getExampleInfo.ts` shows the React Query pattern against
+  `/example-service/api/course_phase/:coursePhaseID/...`.
+- **Reusing shared UI**: pages use `@tumaet/prompt-ui-components` (`ManagementPageHeader`,
+  `ErrorPage`, `LoadingPage`, cards) and the shared `CoursePhaseParticipationsTable` instead of
+  custom widgets.
+- **Role-gated navigation**: `requiredPermissions` on routes and sidebar subitems.
 
 ## Run it locally
 
 ```bash
-make db          # Postgres + Keycloak
-make server      # core server
-make clients     # all micro-frontends, this one on port 3001
-# or standalone: cd clients/example_component && yarn dev
+yarn install
+yarn dev          # serves the remote on port 3001
 ```
 
-Open <http://localhost:3000> and add a phase of type `example_component` to a course.
+Start a PROMPT dev stack, open <http://localhost:3000>, and add a phase of type
+`example_component` to a course. In development core loads this remote from port 3001. The
+client reaches the phase server through the `EXAMPLE_HOST` value in core's runtime config
+(`window.env`).
 
-## Creating your own phase from this component
-
-Prefer `make new-phase` (see above). To do it manually:
-1. `cp -R clients/example_component clients/<name>_component` and rename the inner
-   `src/example_component` directory.
-2. Update `name` and `port` in `rspack.config.mjs`, `"name"` in `package.json`, and the root
-   element id in `public/template.html` + `src/bootstrap.tsx`.
-3. Register the workspace in `clients/package.json` and `clients/lerna.json`.
-4. Register the remote + phase mappings in core and the services in docker-compose — the full
-   checklist lives in `docs/contributor/new_course_phase.md`.
-
-Keep this component generic: it is the source for new phases and is planned to move into a
-standalone GitHub template repository (see `template-repository/` at the repo root).
+Checks: `yarn typecheck`, `yarn lint`, `yarn build`.

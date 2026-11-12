@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/prompt-edu/prompt-sdk/audit"
 	promptTypes "github.com/prompt-edu/prompt-sdk/promptTypes"
-	db "github.com/prompt-edu/prompt/servers/example_server/db/sqlc"
+	db "github.com/prompt-edu/prompt-example-phase/server/db/sqlc"
 )
 
 // auditCopyAction names the copy route and the event its handler records, so

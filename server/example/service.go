@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
-	db "github.com/prompt-edu/prompt/servers/example_server/db/sqlc"
+	db "github.com/prompt-edu/prompt-example-phase/server/db/sqlc"
 )
 
 // ExampleService holds everything the module's business logic needs. Collaborators

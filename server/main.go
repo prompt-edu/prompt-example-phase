@@ -13,11 +13,11 @@ import (
 	"github.com/prompt-edu/prompt-sdk/audit"
 	"github.com/prompt-edu/prompt-sdk/promptTypes"
 	sdkUtils "github.com/prompt-edu/prompt-sdk/utils"
-	"github.com/prompt-edu/prompt/servers/example_server/bodyLimit"
-	"github.com/prompt-edu/prompt/servers/example_server/config"
-	"github.com/prompt-edu/prompt/servers/example_server/copy"
-	db "github.com/prompt-edu/prompt/servers/example_server/db/sqlc"
-	"github.com/prompt-edu/prompt/servers/example_server/example"
+	"github.com/prompt-edu/prompt-example-phase/server/bodyLimit"
+	"github.com/prompt-edu/prompt-example-phase/server/config"
+	"github.com/prompt-edu/prompt-example-phase/server/copy"
+	db "github.com/prompt-edu/prompt-example-phase/server/db/sqlc"
+	"github.com/prompt-edu/prompt-example-phase/server/example"
 	log "github.com/sirupsen/logrus"
 )
 

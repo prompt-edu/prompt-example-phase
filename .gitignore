@@ -1,0 +1,22 @@
+# Environment & secrets
+.env
+.env.local
+
+# Local development data
+postgres_data/
+
+# Node / client
+node_modules/
+client/.yarn/*
+!client/.yarn/releases
+client/build/
+.cache/
+
+# Go / server
+server/.gocache/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
