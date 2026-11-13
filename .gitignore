@@ -20,3 +20,6 @@ server/.gocache/
 .idea/
 .DS_Store
 *.swp
+
+# Claude Code
+.claude/worktrees/
